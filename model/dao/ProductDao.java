@@ -1,6 +1,6 @@
 package com.wbsistemas.controle_estoque_jdbc.model.dao;
 
-import com.wbsistemas.controle_estoque_jdbc.model.Product;
+import com.wbsistemas.controle_estoque_jdbc.model.entities.Product;
 
 import java.util.List;
 

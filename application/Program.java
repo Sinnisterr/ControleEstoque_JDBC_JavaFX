@@ -1,26 +1,26 @@
 package com.wbsistemas.controle_estoque_jdbc.application;
 
-import com.wbsistemas.controle_estoque_jdbc.db.DB;
-import com.wbsistemas.controle_estoque_jdbc.db.DbException;
-import com.wbsistemas.controle_estoque_jdbc.model.Product;
+import com.wbsistemas.controle_estoque_jdbc.model.entities.Product;
 import com.wbsistemas.controle_estoque_jdbc.model.dao.DaoFactory;
 import com.wbsistemas.controle_estoque_jdbc.model.dao.ProductDao;
-import com.wbsistemas.controle_estoque_jdbc.model.dao.impl.ProductDaoJDBC;
 
-import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
 
 public class Program {
 
     public static void main(String[] args) {
-
-        Product prod = new Product(1, "TV", 33.00, new Date(), 3);
-
-        System.out.println(prod);
-
+        Scanner sc = new Scanner(System.in);
         ProductDao productDao = DaoFactory.createProductDao();
+        List<Product> list = new ArrayList<>();
 
-
+        System.out.println("==== TEST 1: Products findAll ====");
+        list = productDao.findAll();
+        for(Product prod : list) {
+            System.out.println(prod);
+        }
 
 
 

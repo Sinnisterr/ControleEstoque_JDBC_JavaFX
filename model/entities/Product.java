@@ -1,4 +1,4 @@
-package com.wbsistemas.controle_estoque_jdbc.model;
+package com.wbsistemas.controle_estoque_jdbc.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
