@@ -22,7 +22,11 @@ public class Program {
             System.out.println(prod);
         }
 
-
+        System.out.println("\n==== TEST 2: Products findNameParcial ====");
+        list = productDao.findByName("sam", true);
+        for(Product prod : list) {
+            System.out.println(prod);
+        }
 
     }
 

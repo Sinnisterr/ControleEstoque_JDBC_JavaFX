@@ -55,8 +55,8 @@ public class ProductDaoJDBC implements ProductDao {
             // Itera pelos resultados
             while (rs.next()) {
                 // Cria um novo objeto Product para cada linha
-               Product prod = instantiate(rs);
-               produtos.add(prod);
+                Product prod = instantiate(rs);
+                produtos.add(prod);
             }
 
         } catch (SQLException e) {
@@ -66,6 +66,40 @@ public class ProductDaoJDBC implements ProductDao {
             DB.closeResultSet(rs);
         }
         return produtos;
+    }
+
+    @Override
+    public List<Product> findByName(String name, boolean parcial) {
+        List<Product> prod = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            // Ajusta a consulta com base no parâmetro 'parcial'
+            if (parcial) {
+                st = conn.prepareStatement("SELECT * FROM estoque.controlestoque WHERE Produto LIKE ?");
+                st.setString(1, "%" + name + "%"); // Busca parcial
+            } else {
+                st = conn.prepareStatement("SELECT * FROM estoque.controlestoque WHERE Produto = ?");
+                st.setString(1, name); // Busca exata
+            }
+
+            rs = st.executeQuery(); // Executa a consulta
+
+            // Itera pelos resultados
+            while (rs.next()) {
+                Product produto = instantiate(rs); // Instancia um novo produto
+                prod.add(produto); // Adiciona o produto à lista
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatment(st);
+            DB.closeResultSet(rs);
+        }
+
+        return prod; // Retorna a lista de produtos (pode ser vazia)
     }
 
     private Product instantiate(ResultSet rs) throws SQLException {

@@ -11,6 +11,7 @@ public interface ProductDao {
     void deleteByName(String name);
     void findByInitialLetter(char initialLetter);
     List<Product> findAll();
+    List<Product> findByName(String name, boolean parcial);
 
 
 }
