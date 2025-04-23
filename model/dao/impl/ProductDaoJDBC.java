@@ -55,16 +55,9 @@ public class ProductDaoJDBC implements ProductDao {
             // Itera pelos resultados
             while (rs.next()) {
                 // Cria um novo objeto Product para cada linha
-                Product prod = new Product();
-                prod.setId(rs.getInt("Id"));
-                prod.setProduct(rs.getString("Produto"));
-                prod.setPrice(rs.getDouble("Preco"));
-                prod.setDate(rs.getDate("Data_Cadastro"));
-                prod.setQuantity(rs.getInt("Quantidade"));
-
-                produtos.add(prod);
+               Product prod = instantiate(rs);
+               produtos.add(prod);
             }
-            return produtos;
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
@@ -72,5 +65,16 @@ public class ProductDaoJDBC implements ProductDao {
             DB.closeStatment(st);
             DB.closeResultSet(rs);
         }
+        return produtos;
+    }
+
+    private Product instantiate(ResultSet rs) throws SQLException {
+        Product prod = new Product();
+        prod.setId(rs.getInt("Id"));
+        prod.setProduct(rs.getString("Produto"));
+        prod.setPrice(rs.getDouble("Preco"));
+        prod.setDate(rs.getDate("Data_Cadastro"));
+        prod.setQuantity(rs.getInt("Quantidade"));
+        return prod;
     }
 }
