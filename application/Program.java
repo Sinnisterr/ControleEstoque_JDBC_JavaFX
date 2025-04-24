@@ -31,7 +31,11 @@ public class Program {
         System.out.println("\n==== TEST 3: Products findByInitialLetter ====");
         productDao.findByInitialLetter('M');
 
-        System.out.println("\n==== TEST 4: Products findByInitialLetter ====");
+        System.out.println("\n==== TEST 4: Deleted byName ====");
+        productDao.deleteByName("Teclado Microsoft Wireless");
+        System.out.println("Done.");
+
+        }
 
     }
 
@@ -45,4 +49,3 @@ public class Program {
 //            DB.closeConnection();
 //        }
 //    }
-}

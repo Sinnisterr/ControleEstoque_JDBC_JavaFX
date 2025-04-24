@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ProductDaoJDBC implements ProductDao {
 
-    private Connection conn;
+    private final Connection conn;
 
     public ProductDaoJDBC(Connection conn) {
         this.conn = conn;
@@ -32,6 +32,45 @@ public class ProductDaoJDBC implements ProductDao {
 
     @Override
     public void deleteByName(String name) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        // Verifica se o nome é nulo ou vazio
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do produto não pode ser nulo ou vazio.");
+        }
+
+        try {
+
+            //Verifica se o produto existe
+            st = conn.prepareStatement(
+                    "SELECT COUNT(*) FROM estoque.controlestoque WHERE Produto = ? ");
+            st.setString(1, name);
+            rs = st.executeQuery();
+
+            if(rs.next() && rs.getInt(1) == 0) {
+                System.out.println("Produto não encontrado: " + name);
+            }
+
+            // Deleta Produto
+            st = conn.prepareStatement(
+                    "DELETE FROM estoque.controlestoque WHERE Produto = ? ");
+            st.setString(1, name);
+
+            int rowsAffected = st.executeUpdate(); // executa a exclusao e obtem o numero de linhas
+
+            if (rowsAffected > 0) {
+                    System.out.println("Produto deletado com sucesso: " + name);
+            } else {
+                System.out.println("Nenhuma linha afetada! O produto pode não existir.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao tentar deletar o produto: " + e.getMessage());
+        } finally {
+            DB.closeStatment(st);
+            DB.closeResultSet(rs);
+        }
 
     }
 
@@ -53,7 +92,7 @@ public class ProductDaoJDBC implements ProductDao {
                 System.out.println(prod);
             }
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
             DB.closeStatment(st);
