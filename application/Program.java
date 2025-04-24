@@ -1,5 +1,6 @@
 package com.wbsistemas.controle_estoque_jdbc.application;
 
+import com.wbsistemas.controle_estoque_jdbc.db.DbException;
 import com.wbsistemas.controle_estoque_jdbc.model.entities.Product;
 import com.wbsistemas.controle_estoque_jdbc.model.dao.DaoFactory;
 import com.wbsistemas.controle_estoque_jdbc.model.dao.ProductDao;
@@ -34,6 +35,22 @@ public class Program {
         System.out.println("\n==== TEST 4: Deleted byName ====");
         productDao.deleteByName("Teclado Microsoft Wireless");
         System.out.println("Done.");
+
+
+        System.out.println("\n==== TEST 5: Update ====");
+        Product updateProd = new Product();
+        updateProd.setId(4);
+        updateProd.setProduct("Novo Nome");
+        updateProd.setPrice(99.99);
+        updateProd.setQuantity(50);
+
+        // Chamando o método update
+        try {
+            productDao.update(updateProd);
+            System.out.println("Produto atualizado com sucesso!");
+        } catch (DbException e) {
+            System.err.println("Erro ao atualizar o produto: " + e.getMessage());
+        }
 
         }
 
