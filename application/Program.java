@@ -28,7 +28,13 @@ public class Program {
             System.out.println(prod);
         }
 
+        System.out.println("\n==== TEST 3: Products findByInitialLetter ====");
+        productDao.findByInitialLetter('M');
+
+        System.out.println("\n==== TEST 4: Products findByInitialLetter ====");
+
     }
+
 
 //        try {
 //            Connection conn = DB.getConnection();

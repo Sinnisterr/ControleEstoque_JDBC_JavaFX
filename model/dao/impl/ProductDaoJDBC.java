@@ -38,6 +38,28 @@ public class ProductDaoJDBC implements ProductDao {
     @Override
     public void findByInitialLetter(char initialLetter) {
 
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement(
+                    "SELECT * FROM estoque.controlestoque WHERE Produto LIKE ? ");
+
+            st.setString(1, initialLetter + "%");
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                Product prod = instantiate(rs);
+                System.out.println(prod);
+            }
+
+        }catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatment(st);
+            DB.closeResultSet(rs);
+        }
+
     }
 
     @Override
