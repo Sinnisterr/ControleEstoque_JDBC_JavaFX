@@ -5,10 +5,7 @@ import com.wbsistemas.controle_estoque_jdbc.db.DbException;
 import com.wbsistemas.controle_estoque_jdbc.model.entities.Product;
 import com.wbsistemas.controle_estoque_jdbc.model.dao.ProductDao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +19,42 @@ public class ProductDaoJDBC implements ProductDao {
 
     @Override
     public void insert(Product obj) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+
+            st = conn.prepareStatement(
+                    "INSERT INTO estoque.controlestoque (Produto, Preco, Quantidade) VALUES (?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS // Para obter a chave gerada, se necessário
+            );
+
+            st.setString(1, obj.getProduct());
+            st.setDouble(2, obj.getPrice());
+            st.setInt(3, obj.getQuantity());
+
+            // Executando a inserção
+            int rowsAffected = st.executeUpdate();
+
+            // Verificando se a inserção foi bem sucedida
+
+            if(rowsAffected > 0) {
+                // se precisar da chave gerada pode obtela assim
+                rs = st.getGeneratedKeys();
+                if(rs.next()) {
+                    int id = rs.getInt(1); // Obtem a chave gerada
+                    obj.setId(id); // Definindo o Id no objeto Product
+                }
+            } else {
+                throw new DbException("Erro ao inserir o produto, nenhuma linha afetada.");
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatment(st);
+            DB.closeResultSet(rs);
+        }
 
     }
 

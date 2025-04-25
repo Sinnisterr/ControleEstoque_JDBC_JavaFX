@@ -19,13 +19,13 @@ public class Program {
 
         System.out.println("==== TEST 1: Products findAll ====");
         list = productDao.findAll();
-        for(Product prod : list) {
+        for (Product prod : list) {
             System.out.println(prod);
         }
 
         System.out.println("\n==== TEST 2: Products findNameParcial ====");
         list = productDao.findByName("sam", true);
-        for(Product prod : list) {
+        for (Product prod : list) {
             System.out.println(prod);
         }
 
@@ -33,7 +33,7 @@ public class Program {
         productDao.findByInitialLetter('M');
 
         System.out.println("\n==== TEST 4: Deleted byName ====");
-        productDao.deleteByName("Teclado Microsoft Wireless");
+        productDao.deleteByName("Produto Exemplo");
         System.out.println("Done.");
 
 
@@ -52,9 +52,22 @@ public class Program {
             System.err.println("Erro ao atualizar o produto: " + e.getMessage());
         }
 
-        }
+        System.out.println("\n==== TEST 6: Insert ====");
+        Product newProd = new Product();
+        newProd.setProduct("Produto Exemplo");
+        newProd.setPrice(19.99);
+        newProd.setQuantity(100);
 
+        // Chamando o método insert
+        try {
+            productDao.insert(newProd);
+            System.out.println("Produto inserido com sucesso! ID gerado: " + newProd.getId());
+        } catch (DbException e) {
+            System.err.println("Erro ao inserir o produto: " + e.getMessage());
+
+        }
     }
+}
 
 
 //        try {
